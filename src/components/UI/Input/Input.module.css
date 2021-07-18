@@ -1,38 +1,37 @@
 .Input {
-    display: inline-block;
-    margin: 5px;
-  }
-  
-  .Input label {
-    display: inline-block;
-    max-width: 40px;
-    font-size: 14px;
-    font-weight: bold;
-  }
-  
-  .Input input {
-    outline: none;
-    width: 100px;
-    height: 30px;
-    margin: 5px 5px;
-    padding: 5px;
-    border: 1px solid #000;
-    box-sizing: border-box;
-  }
-  
-  .Input span {
-    color: #f01f30;
-    font-weight: bold;
-  }
-  
-  .Input.invalid {
-    color: #f01f30;
-  }
-  
-  .Input input::-webkit-outer-spin-button,
-  .Input input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
-  }
-  
+  display: inline-block;
+  margin: 5px;
+}
+
+.Input label {
+  display: inline-block;
+  max-width: 50px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.Input input {
+  outline: none;
+  width: 100px;
+  height: 30px;
+  margin: 5px 5px;
+  padding: 5px;
+  border: 1px solid #000;
+  box-sizing: border-box;
+}
+
+.Input span {
+  color: #f01f30;
+  font-weight: bold;
+}
+
+.Input.invalid {
+  color: #f01f30;
+}
+
+.Input input::-webkit-outer-spin-button,
+.Input input::-webkit-inner-spin-button {
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}

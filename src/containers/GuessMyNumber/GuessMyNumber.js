@@ -6,6 +6,7 @@ import validator from "validator";
 import GuessRandomNumber from "../../components/GuessRandomNumber/GuessRandomNumber";
 import ResultsGuessNumber from "../../components/ResultsGuessNumber/ResultsGuessNumber";
 
+// function Random Number
 function getRandomNumberMinMax(min, max) {
   if (min < max) {
     const rangeRandomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -24,6 +25,7 @@ class GuessMyNumber extends Component {
     clickRandomNumber: false,
     clickGuessMyNumber: false,
     counterAttempts: [],
+    isFinished: false,
     isFormValid: false,
     formControls: {
       fromNumber: {
@@ -47,20 +49,20 @@ class GuessMyNumber extends Component {
         touched: false,
         validation: {
           required: true,
-          fromNumber: true
+          toNumber: true
         }
       } // end toNumber
     }, // end formControls
     guessNumber: {
       type: "number",
-      label: "",
+      label: "Guess",
       value: 100,
       errorMessage: "Enter correct value",
       valid: false,
       touched: false,
       validation: {
         required: true,
-        fromNumber: true
+        guessNumber: true
       }
     }
   };
@@ -69,6 +71,7 @@ class GuessMyNumber extends Component {
     event.preventDefault();
   };
 
+  // render inputs range of numbers
   renderInputs = () => {
     return Object.keys(this.state.formControls).map((controlName, index) => {
       const control = this.state.formControls[controlName];
@@ -88,6 +91,7 @@ class GuessMyNumber extends Component {
     });
   };
 
+  // validation value
   validateControl(value, validation) {
     if (!validation) {
       return true;
@@ -113,9 +117,19 @@ class GuessMyNumber extends Component {
         isValid;
     }
 
+    // guessNumber
+    if (validation.guessNumber) {
+      isValid =
+        value >= 0 &&
+        validator.isInt(value) &&
+        validator.isNumeric(value) &&
+        isValid;
+    }
+
     return isValid;
   }
 
+  // change Range Number
   changeNumberHandler(controlName, event) {
     console.log(`${controlName} - ` + event.target.value);
 
@@ -139,7 +153,15 @@ class GuessMyNumber extends Component {
     });
   }
 
+  // onClick START
   clickRandomNumberHandler = () => {
+    this.setState({
+      rangeRandomNumber: 0,
+      clickRandomNumber: false,
+      clickGuessMyNumber: false,
+      counterAttempts: [],
+      isFinished: false
+    });
     const min = this.state.formControls.fromNumber.value;
     const max = this.state.formControls.toNumber.value;
     console.log("min - ", min);
@@ -154,16 +176,24 @@ class GuessMyNumber extends Component {
     });
   };
 
+  // change Guess Number
   changeGuessMyNumberHandler = (event) => {
     console.log("guess number - " + event.target.value);
     const guessNumber = { ...this.state.guessNumber };
     guessNumber.value = event.target.value;
     guessNumber.touched = true;
+    guessNumber.valid = this.validateControl(
+      guessNumber.value,
+      guessNumber.validation
+    );
+
     this.setState({
+      clickGuessMyNumber: false,
       guessNumber
     });
   };
 
+  // onClick GUESS
   clickGuessMyNumberHandler = () => {
     const myNumber = this.state.guessNumber.value;
     console.log("my number - ", myNumber);
@@ -171,6 +201,11 @@ class GuessMyNumber extends Component {
     console.log("random number - ", randomNumber);
 
     const counterAttempts = this.state.counterAttempts;
+    let results;
+
+    if (this.state.isFinished) {
+      return;
+    }
 
     if (Number(myNumber) < randomNumber) {
       console.log(`My number is greater than ${myNumber}`);
@@ -185,6 +220,9 @@ class GuessMyNumber extends Component {
     if (Number(myNumber) === randomNumber) {
       console.log("Well Done! It took you [...] attempts to guess this number");
       counterAttempts.push("wellDone");
+      this.setState({
+        isFinished: true
+      });
     }
 
     this.setState({
@@ -192,20 +230,20 @@ class GuessMyNumber extends Component {
       counterAttempts
     });
     console.log(counterAttempts);
+    return results;
   };
 
   render() {
     return (
       <div className={classes.GuessMyNumber}>
-        <div>
-          <h1>Guess My Number</h1>
-          <form
-            onSubmit={this.submitHandler}
-            className={classes.GuessNumberForm}
-          >
-            <h3>Range of numbers</h3>
+        <h1>Guess My Number</h1>
+        <div className={classes.GuessNumberForm}>
+          <h3>Range of numbers</h3>
+          <form onSubmit={this.submitHandler}>
             {this.renderInputs()}
             <Button onClick={this.clickRandomNumberHandler}>Start</Button>
+          </form>
+          <form onSubmit={this.submitHandler}>
             {this.state.clickRandomNumber ? (
               <GuessRandomNumber
                 onChange={(event) => this.changeGuessMyNumberHandler(event)}

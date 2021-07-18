@@ -15,15 +15,20 @@ const ResultsGuessNumber = (props) => {
     },
     0
   );
-  
+
   return (
     <div className={classes.ResultsGuessNumber}>
-      
-      {resultsCount}
-      
-      {/* <p>My number is greater than</p>
-      <p>My number is less than</p>
-      <p>Well Done! It took you {resultsCount} attempts to guess this number</p> */}
+      {Number(props.myNumber) < props.randomNumber ? (
+        <p>My number is greater than {props.myNumber}</p>
+      ) : null}
+      {Number(props.myNumber) > props.randomNumber ? (
+        <p>My number is less than {props.myNumber}</p>
+      ) : null}
+      {Number(props.myNumber) === props.randomNumber ? (
+        <p>
+          Well Done! It took you {resultsCount} attempts to guess this number
+        </p>
+      ) : null}
     </div>
   );
 };

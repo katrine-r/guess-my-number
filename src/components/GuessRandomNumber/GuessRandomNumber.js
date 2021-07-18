@@ -9,13 +9,13 @@ const GuessRandomNumber = (props) => {
       <h3>Guess of numbers</h3>
 
       <Input
-        label={props.label}
-        value={props.value}
-        type={props.type}
-        valid={props.valid}
-        touched={props.touched}
-        shouldValidate={!!props.validation}
-        errorMessage={props.errorMessage}
+        label={props.state.label}
+        value={props.state.value}
+        type={props.state.type}
+        valid={props.state.valid}
+        touched={props.state.touched}
+        shouldValidate={!!props.state.validation}
+        errorMessage={props.state.errorMessage}
         onChange={props.onChange}
       />
 
